@@ -1,0 +1,82 @@
+.stq-quiz {
+  border: 1px solid #e2e2e2;
+  padding: 20px;
+  border-radius: 6px;
+  background: #fff;
+  max-width: 700px;
+}
+
+.stq-title {
+  margin-top: 0;
+}
+
+.stq-step {
+  margin: 0 0 20px;
+}
+
+.stq-step legend {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.stq-answers label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.stq-user-fields {
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stq-user-fields input {
+  width: 100%;
+  padding: 8px;
+}
+
+.stq-navigation {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.stq-progress {
+  background: #f1f1f1;
+  border-radius: 999px;
+  overflow: hidden;
+  height: 8px;
+  margin-bottom: 16px;
+}
+
+.stq-progress-bar {
+  background: #007cba;
+  height: 100%;
+  transition: width 0.2s ease;
+}
+
+.stq-quiz.stq-js .stq-submit {
+  display: none;
+}
+
+.stq-quiz.stq-js .stq-step {
+  display: none;
+}
+
+.stq-result {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f8f8f8;
+  border-radius: 4px;
+}
+
+.stq-error {
+  color: #b32d2e;
+}
+
+@media (max-width: 600px) {
+  .stq-user-fields {
+    grid-template-columns: 1fr;
+  }
+}
