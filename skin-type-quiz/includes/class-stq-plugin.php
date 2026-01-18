@@ -5,29 +5,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class STQ_Plugin {
-    public static function activate() {
-        global $wpdb;
-
-        $table_name = $wpdb->prefix . 'stq_quiz_users';
-        $charset_collate = $wpdb->get_charset_collate();
-
-        $sql = "CREATE TABLE {$table_name} (
-            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-            quiz_id varchar(100) NOT NULL,
-            user_name varchar(190) NOT NULL,
-            user_email varchar(190) NOT NULL,
-            result_letter varchar(10) NOT NULL,
-            result_title varchar(190) NOT NULL,
-            submitted_at datetime NOT NULL,
-            PRIMARY KEY  (id),
-            KEY quiz_id (quiz_id),
-            KEY user_email (user_email)
-        ) {$charset_collate};";
-
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        dbDelta( $sql );
-    }
-
     public function init() {
         $this->register_hooks();
     }

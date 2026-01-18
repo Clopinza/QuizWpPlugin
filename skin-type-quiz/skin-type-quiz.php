@@ -24,8 +24,6 @@ require_once STQ_PLUGIN_DIR . 'includes/class-stq-plugin.php';
 require_once STQ_PLUGIN_DIR . 'includes/class-stq-admin.php';
 require_once STQ_PLUGIN_DIR . 'includes/class-stq-shortcode.php';
 
-register_activation_hook( __FILE__, array( 'STQ_Plugin', 'activate' ) );
-
 function stq_bootstrap() {
     $plugin = new STQ_Plugin();
     $plugin->init();
