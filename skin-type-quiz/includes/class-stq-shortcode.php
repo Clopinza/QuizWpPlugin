@@ -229,11 +229,23 @@ class STQ_Shortcode {
         $headers = array(
             'From: ' . $from_name . ' <' . $from_email . '>',
             'Reply-To: ' . $from_name . ' <' . $from_email . '>',
-            'Content-Type: text/html; charset=UTF-8',
         );
 
         $subject = sprintf( __( 'Il tuo risultato: %s', 'skin-type-quiz' ), $result_data['title'] );
-        $body = $this->build_html_email( $quiz, $user_name, $result_letter, $result_data, $summary );
+        $body_lines = array(
+            sprintf( __( 'Ciao %s,', 'skin-type-quiz' ), $user_name ),
+            '',
+            sprintf( __( 'Risultato: %s (%s)', 'skin-type-quiz' ), $result_data['title'], $result_letter ),
+            $result_data['description'],
+            '',
+            __( 'Riepilogo risposte:', 'skin-type-quiz' ),
+        );
+
+        foreach ( $summary as $item ) {
+            $body_lines[] = sprintf( '- %s => %s (%s)', $item['question'], $item['answer'], $item['letter'] );
+        }
+
+        $body = implode( "\n", $body_lines );
 
         wp_mail( $user_email, $subject, $body, $headers );
 
@@ -241,54 +253,6 @@ class STQ_Shortcode {
             $admin_email = get_option( 'admin_email' );
             wp_mail( $admin_email, $subject, $body, $headers );
         }
-    }
-
-    private function build_html_email( $quiz, $user_name, $result_letter, $result_data, $summary ) {
-        $site_name = get_bloginfo( 'name' );
-        $site_url  = home_url();
-        $quiz_title = $quiz['title'] ?? __( 'Quiz tipo di pelle', 'skin-type-quiz' );
-
-        $list_items = '';
-        foreach ( $summary as $item ) {
-            $list_items .= sprintf(
-                '<li><strong>%s</strong><br>%s <em>(%s)</em></li>',
-                esc_html( $item['question'] ),
-                esc_html( $item['answer'] ),
-                esc_html( $item['letter'] )
-            );
-        }
-
-        $body = sprintf(
-            '<div style="font-family:Arial,sans-serif;line-height:1.6;color:#222;">' .
-            '<div style="background:#f5f7fa;padding:20px;border-radius:8px;">' .
-            '<h1 style="margin:0 0 10px;font-size:20px;">%s</h1>' .
-            '<p style="margin:0 0 10px;">%s <strong>%s</strong></p>' .
-            '<p style="margin:0 0 10px;">%s</p>' .
-            '<hr style="border:none;border-top:1px solid #ddd;margin:20px 0;" />' .
-            '<h2 style="margin:0 0 10px;font-size:18px;">%s</h2>' .
-            '<p style="margin:0 0 10px;"><strong>%s</strong> <span style="color:#555;">(%s)</span></p>' .
-            '<p style="margin:0 0 10px;">%s</p>' .
-            '<h3 style="margin:20px 0 10px;font-size:16px;">%s</h3>' .
-            '<ol style="padding-left:20px;margin:0;">%s</ol>' .
-            '<p style="margin:20px 0 0;font-size:12px;color:#777;">%s <a href="%s" style="color:#007cba;">%s</a></p>' .
-            '</div>' .
-            '</div>',
-            esc_html( $quiz_title ),
-            esc_html__( 'Ciao', 'skin-type-quiz' ),
-            esc_html( $user_name ),
-            esc_html__( 'Ecco il tuo risultato personalizzato.', 'skin-type-quiz' ),
-            esc_html__( 'Risultato', 'skin-type-quiz' ),
-            esc_html( $result_data['title'] ),
-            esc_html( $result_letter ),
-            esc_html( $result_data['description'] ),
-            esc_html__( 'Riepilogo risposte', 'skin-type-quiz' ),
-            $list_items,
-            esc_html__( 'Grazie per aver completato il quiz su', 'skin-type-quiz' ),
-            esc_url( $site_url ),
-            esc_html( $site_name )
-        );
-
-        return $body;
     }
 
     private function send_response( $is_ajax, $success, $message = '', $data = array() ) {
